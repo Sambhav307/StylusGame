@@ -95,8 +95,12 @@ function Game(timestamp) {
  
 
   if (gameEnd) {
-
+    //ouput
+    
+    ctx.clearRect(0, 0, width, height);
+    ctx.fillText(" GGWL - Reload to play Again" + " \n  " + " Score: " +score.toFixed(0) , width/2-200, height/2, 400);
     clearInterval(timer1);
+    return
   }
 
 
@@ -125,7 +129,7 @@ function Game(timestamp) {
 
   // ctx.fillText("px py pr " + px.toFixed(0) + " " + py.toFixed(0) + " "+ pr.toFixed(0), width - 100, 10, 80);
   // console.log(px + " " + py);
-  ctx.fillText("pressue score " + pressure + " " + score.toFixed(0), width - 100, 20, 80);
+  ctx.fillText("pressue score " + pressure.toFixed(2) + " " + score.toFixed(0), width - 100, 20, 80);
   // ctx.fillText("cx cy cr " + cx.toFixed(0) + " " + cy.toFixed(0) +" "+ cr, width - 100, 30, 80);
 
 
@@ -139,9 +143,9 @@ function Game(timestamp) {
 
   //pressure
   ctx.beginPath();
-  ctx.arc(px, py, pr, 0, 2 * Math.PI, false);
+  ctx.arc(px, py, pr.toFixed(0), 0, 2 * Math.PI, false);
   ctx.fillStyle = "blue";
-  ctx.fill();
+  ctx.fill();  
 
   pressure = 0;
 
