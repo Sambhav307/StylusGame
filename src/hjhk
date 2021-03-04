@@ -1,29 +1,7 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 
 
-
-
-// Disable extra scrolling
 let canvas = document.getElementById("canvas");
-
-canvas.addEventListener("touchstart",  function(event) {event.preventDefault()})
-canvas.addEventListener("touchmove",   function(event) {event.preventDefault()})
-canvas.addEventListener("touchend",    function(event) {event.preventDefault()})
-canvas.addEventListener("touchcancel", function(event) {event.preventDefault()})
-
-
-// function preventDefault(e) {
-//   e.preventDefault();
-// }
-
-// function disableScroll() {
-//   document.body.addEventListener("touchmove", preventDefault, {
-//     passive: false
-//   });
-// }
-
-
-
 let ctx = canvas.getContext("2d");
 var height = 330;
 var width = 600;
@@ -35,12 +13,12 @@ var pressure = 0;
 var px = 0;
 var py = 0;
 var pr = 0;
+
 var cx = 0;
 var cy = 0;
 var cr = 0;
 var gameEnd = false;
 var score = 0;
-var scoreround = 0 ;
 
 
 
@@ -58,14 +36,28 @@ Pressure.set("#canvas", {
 
 function check() {
   var distt = dist();
+  // console.log(" check  "+
+  //   pressure +
+  //     " " +
+  //     px +
+  //     " " +
+  //     py +
+  //     " " +
+  //     pr +
+  //     " circle" +
+  //     cx +
+  //     " " +
+  //     cy +
+  //     " " +
+  //     cr
+  // );
+  // console.log(distt + " " + pr + " " + cr);
+
+  // console.log(distt + " " + pr + " " + cr);
   var temp = parseInt(distt)+ parseInt(pr)
 
-  var vall= ((distt)/(cr) )*100;
-  
-  if(scoreround < vall){
-    scoreround = vall;
-  }
 
+  // console.log(temp + " " + cr);
   if (temp > cr) {
     gameEnd = true;
   }
@@ -83,7 +75,7 @@ var timer1 = null;
 var score = 0;
 var i = 0;
 timer = setInterval(circlespawn, 3000);
-timer1 = setInterval(Game, 20);
+timer1 = setInterval(Game, 40);
 // timer = setInterval(pressureupdate, 50);
 
 
@@ -96,39 +88,29 @@ function Game(timestamp) {
 
   if (gameEnd) {
 
+
+
     clearInterval(timer1);
   }
-
-
-  // pressure reset
+  //pressure reset
   if (pressure == 0) {
     px = cx;
     py = cy;
     pr = 0;
   }
 
-
-
-  // ctx.beginPath();
-  // ctx.arc(px, py, pr, 0, 2 * Math.PI, false);
-  // ctx.fillStyle = "blue";
-  // ctx.fill();
-
-  // clear canvas
+  //clear canvas
   ctx.clearRect(0, 0, width, height);
 
-  // //output
-  // ctx.clearRect(width - 200, 0, width, 30);
-  // ctx.fillText("px py pr " + px + " " + py+ " "+ pr, width - 200, 10, 200);
 
 
+  
 
-  // ctx.fillText("px py pr " + px.toFixed(0) + " " + py.toFixed(0) + " "+ pr.toFixed(0), width - 100, 10, 80);
+  //output
+  ctx.fillText("px py pr " + px + " " + py+ " "+ pr, width - 100, 10, 80);
   // console.log(px + " " + py);
-  ctx.fillText("pressue score " + pressure + " " + score.toFixed(0), width - 100, 20, 80);
-  // ctx.fillText("cx cy cr " + cx.toFixed(0) + " " + cy.toFixed(0) +" "+ cr, width - 100, 30, 80);
-
-
+  ctx.fillText("pressue score " + pressure + " " + score, width - 100, 20, 80);
+  ctx.fillText("cx cy cr " + cx + " " + cy +" "+ cr, width - 100, 30, 80);
   //random circle spawn
   ctx.beginPath();
   ctx.fillStyle = "Black";
@@ -140,6 +122,7 @@ function Game(timestamp) {
   //pressure
   ctx.beginPath();
   ctx.arc(px, py, pr, 0, 2 * Math.PI, false);
+  ctx.arc(cx, cy, 10, 0, 2 * Math.PI, true);
   ctx.fillStyle = "blue";
   ctx.fill();
 
@@ -150,16 +133,11 @@ function Game(timestamp) {
   pr = 0;
 }
 
-
-
-
-
-
 function circlespawn(timestamp) {
   cx = (Math.random() * (width - 200) + 100);
   cy = (Math.random() * (height - 200) + 100);
   cr = (Math.random() * radius + 5);
-  score = score+ scoreround;
+  score++;
   if (pressure == 0) {
     px = cx;
     py = cy;
@@ -167,6 +145,16 @@ function circlespawn(timestamp) {
   }
 }
 
+// Disable extra scrolling
+function preventDefault(e) {
+  e.preventDefault();
+}
+
+function disableScroll() {
+  document.body.addEventListener("touchmove", preventDefault, {
+    passive: false
+  });
+}
 
 },{"pressure":2}],2:[function(require,module,exports){
 // Pressure v2.2.0 | Created By Stuart Yamartino | MIT License | 2015 - 2020
